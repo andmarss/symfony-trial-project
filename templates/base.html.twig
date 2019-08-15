@@ -3,10 +3,42 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('build/css/app.css') }}">
+        {% endblock %}
     </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+    <body class="bg-light">
+        <main class="container" role="main">
+            <div class="my-3 p-3 bg-white rounded box-shadow">
+                <h6 class="border-bottom border-gray pb-2 mb-0">Recent updates</h6>
+                <div class="media text-muted pt-3">
+                    <img alt="" class="mr-2" data-src="holder.js/32x32?text=MJ&bg=#e83e8c&fg=fff&size=8">
+                    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-grey">
+                        <span class="d-block"><strong class="text-gray-dark">@username</strong> <small class="text-gray-dark">2 hrs</small></span>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, assumenda atque dignissimos dolor dolorem ducimus eum explicabo incidunt officia quae repellat sapiente unde ut velit.
+                    </p>
+                </div>
+                <div class="media text-muted pt-3">
+                    <img alt="" class="mr-2" data-src="holder.js/32x32?text=MJ&bg=#e83e8c&fg=fff&size=8">
+                    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-grey">
+                        <span class="d-block"><strong class="text-gray-dark">@username</strong> <small class="text-gray-dark">2 hrs</small></span>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium adipisci aut commodi exercitationem molestiae natus necessitatibus nihil nulla quos, recusandae repellat suscipit temporibus, tenetur voluptatum.
+                    </p>
+                </div>
+                <div class="media text-muted pt-3">
+                    <img alt="" class="mr-2" data-src="holder.js/32x32?text=MJ&bg=#e83e8c&fg=fff&size=8">
+                    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-grey">
+                        <span class="d-block"><strong class="text-gray-dark">@username</strong> <small class="text-gray-dark">2 hrs</small></span>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto atque autem dicta ipsa laboriosam molestiae quibusdam voluptate? Ab cumque fuga possimus sint! At dolorem, laudantium!
+                    </p>
+                </div>
+                <small class="d-block text-right mt-3"><a href="#">All updates</a></small>
+            </div>
+            {% block body %}{% endblock %}
+            {% block javascripts %}
+                <script src="{{ asset('build/js/app.js') }}"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.6/holder.min.js"></script>
+            {% endblock %}
+        </main>
     </body>
 </html>

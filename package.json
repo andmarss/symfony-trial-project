@@ -1,0 +1,32 @@
+{
+  "name": "symfony-trial-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "bootstrap": "^4.0.0",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.12.9"
+  },
+  "devDependencies": {
+    "@symfony/webpack-encore": "^0.28.0",
+    "webpack-notifier": "^1.8.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andmarss/symfony-trial-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andmarss/symfony-trial-project/issues"
+  },
+  "homepage": "https://github.com/andmarss/symfony-trial-project#readme"
+}
