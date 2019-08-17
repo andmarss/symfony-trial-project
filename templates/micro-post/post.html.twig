@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <a href="{{ path('micro_post_index') }}" class="btn" style="font-size: 12px">Back</a>
+
+    {{ include('micro-post/raw-post.html.twig', {'post': post}) }}
+{% endblock %}
