@@ -1,6 +1,6 @@
 security:
     encoders:
-        App\Entity\User: bcrypt
+        App\Entity\User: auto # bcrypt - is deprecated
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         database_users:
@@ -12,6 +12,23 @@ security:
         main:
             anonymous: true
             pattern: ^/
+
+            form_login:
+                check_path: security_login
+                login_path: security_login
+                csrf_token_generator: security.csrf.token_manager
+                default_target_path: micro_post_index
+                # always_use_default_target_path: false
+                # use_referer: true
+                # failure_path: login_failure_route_name
+                # username_parameter: _username
+                # password_parameter: _password
+                # csrf_parameter: _csrf_token
+                # target_path_parameter:
+
+            logout:
+                path: security_logout
+                target: micro_post_index
 
             # http_basic: ~
 

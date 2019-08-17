@@ -28,14 +28,14 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        //$this->loadMicroPosts($manager);
+        $this->loadMicroPosts($manager);
 
         $this->loadUsers($manager);
     }
 
     private function loadMicroPosts(ObjectManager $manager)
     {
-        for ($i = 0; $i < 2; $i++) {
+        for ($i = 0; $i < 3; $i++) {
             /**
              * @var MicroPost $microPost
              */
