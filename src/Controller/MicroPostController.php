@@ -27,7 +27,6 @@ use Symfony\Component\Security\Core\Security as CoreSecurity;
  * @property EntityManagerInterface $entityManager
  * @property RouterInterface $router
  * @property FlashBagInterface $flashBag
- * @property CoreSecurity $security
  */
 class MicroPostController extends AbstractController
 {
@@ -51,18 +50,13 @@ class MicroPostController extends AbstractController
      * @var FlashBagInterface
      */
     private $flashBag;
-    /**
-     * @var CoreSecurity
-     */
-    private $security;
 
     public function __construct(
         MicroPostRepository $repository,
         FormFactoryInterface $formFactory,
         EntityManagerInterface $entityManager,
         RouterInterface $router,
-        FlashBagInterface $flashBag,
-        CoreSecurity $security
+        FlashBagInterface $flashBag
     )
     {
         $this->repository = $repository;
@@ -70,7 +64,6 @@ class MicroPostController extends AbstractController
         $this->entityManager = $entityManager;
         $this->router = $router;
         $this->flashBag = $flashBag;
-        $this->security = $security;
     }
 
     /**
@@ -121,7 +114,7 @@ class MicroPostController extends AbstractController
         /**
          * @var User $user
          */
-        $user = $this->security->getUser();
+        $user = $this->getUser();
         $microPost->setTime(new \DateTime());
         $microPost->setUser($user);
 
@@ -139,6 +132,18 @@ class MicroPostController extends AbstractController
 
         return $this->render('micro-post/add.html.twig', [
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/user/{username}", name="micro_post_user")
+     * @param User $user
+     * @return Response
+     */
+    public function userPosts(User $user)
+    {
+        return $this->render('micro-post/index.html.twig', [
+            'posts' => $user->getPosts()
         ]);
     }
 
