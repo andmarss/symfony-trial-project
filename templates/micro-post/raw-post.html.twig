@@ -1,11 +1,15 @@
 <div class="media text-muted pt-3">
-    <img alt="" class="mr-2" data-src="holder.js/32x32?text=MJ&bg=#e83e8c&fg=fff&size=8">
+    {% set initials = post.user.fullName|split(' ') %}
+
+    <img alt="" class="mr-2" data-src="holder.js/32x32?text={{ attribute(initials, 0)|first }}{{ attribute(initials, 1)|first }}&bg=#e83e8c&fg=fff&size=8">
     <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-grey">
-        <span class="d-block"><strong class="text-gray-dark">@username</strong> <small class="text-gray-dark"> &bull; {{ post.time|date('d/m/Y') }}</small></span>
+        <span class="d-block"><strong class="text-gray-dark">@{{ post.getUser().username }}</strong> <small class="text-gray-dark"> &bull; {{ post.time|date('d/m/Y') }}</small></span>
         {{ post.text }}
-        <small class="d-block text-right mt-3">
-            <a href="{{ path('micro_post_edit', {'id': post.id}) }}" class="font-weight-bold">Edit</a>&nbsp;&nbsp;
-            <a href="{{ path('micro_post_delete', {'id': post.id}) }}" class="text-danger font-weight-bold">Delete</a>
-        </small>
+        {% if app.user and post.getUser().id == app.user.id %}
+            <small class="d-block text-right mt-3">
+                <a href="{{ path('micro_post_edit', {'id': post.id}) }}" class="font-weight-bold">Edit</a>&nbsp;&nbsp;
+                <a href="{{ path('micro_post_delete', {'id': post.id}) }}" class="text-danger font-weight-bold">Delete</a>
+            </small>
+        {% endif %}
     </p>
 </div>
