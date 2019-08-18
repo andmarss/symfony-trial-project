@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Entity\MicroPost;
+use App\Entity\User;
 use App\Form\MicroPostType;
 use App\Repository\MicroPostRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Security as CoreSecurity;
 
 /**
  * @Route("/micro-post")
@@ -25,6 +27,7 @@ use Symfony\Component\Routing\RouterInterface;
  * @property EntityManagerInterface $entityManager
  * @property RouterInterface $router
  * @property FlashBagInterface $flashBag
+ * @property CoreSecurity $security
  */
 class MicroPostController extends AbstractController
 {
@@ -48,13 +51,18 @@ class MicroPostController extends AbstractController
      * @var FlashBagInterface
      */
     private $flashBag;
+    /**
+     * @var CoreSecurity
+     */
+    private $security;
 
     public function __construct(
         MicroPostRepository $repository,
         FormFactoryInterface $formFactory,
         EntityManagerInterface $entityManager,
         RouterInterface $router,
-        FlashBagInterface $flashBag
+        FlashBagInterface $flashBag,
+        CoreSecurity $security
     )
     {
         $this->repository = $repository;
@@ -62,6 +70,7 @@ class MicroPostController extends AbstractController
         $this->entityManager = $entityManager;
         $this->router = $router;
         $this->flashBag = $flashBag;
+        $this->security = $security;
     }
 
     /**
@@ -97,6 +106,7 @@ class MicroPostController extends AbstractController
 
     /**
      * @Route("/add", name="micro_post_add")
+     * @Security("is_granted('ROLE_USER')")
      *
      * @param Request $request
      * @return Response
@@ -108,7 +118,12 @@ class MicroPostController extends AbstractController
          * @var MicroPost $microPost
          */
         $microPost = new MicroPost();
+        /**
+         * @var User $user
+         */
+        $user = $this->security->getUser();
         $microPost->setTime(new \DateTime());
+        $microPost->setUser($user);
 
         $form = $this->formFactory->create(MicroPostType::class, $microPost);
         $form->handleRequest($request);
