@@ -18,22 +18,32 @@ class AppFixtures extends Fixture
 {
     private const USERS = [
         [
+            'username' => 'admin',
+            'email'    => 'admin@mail.com',
+            'password' => 'secret',
+            'fullName' => 'Admin',
+            'roles'    => [User::ROLE_ADMIN]
+        ],
+        [
             'username' => 'foo_bar',
             'email'    => 'foo_bar@mail.com',
             'password' => 'secret',
-            'fullName' => 'Foo Bar'
+            'fullName' => 'Foo Bar',
+            'roles'    => [User::ROLE_USER]
         ],
         [
             'username' => 'bar_baz',
             'email'    => 'bar_baz@mail.com',
             'password' => 'secret',
-            'fullName' => 'Bar Baz'
+            'fullName' => 'Bar Baz',
+            'roles'    => [User::ROLE_USER]
         ],
         [
             'username' => 'foo_baz',
             'email'    => 'foo_baz@mail.com',
             'password' => 'secret',
-            'fullName' => 'Foo Baz'
+            'fullName' => 'Foo Baz',
+            'roles'    => [User::ROLE_USER]
         ]
     ];
 
@@ -106,6 +116,7 @@ class AppFixtures extends Fixture
             $user->setPassword(
                 $this->encoder->encodePassword($user, $userData['password'])
             );
+            $user->setRoles($userData['roles']);
 
             $this->addReference($userData['username'], $user);
 
