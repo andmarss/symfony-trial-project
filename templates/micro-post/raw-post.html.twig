@@ -5,10 +5,14 @@
     <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-grey">
         <span class="d-block"><strong class="text-gray-dark">@{{ post.getUser().username }}</strong> <small class="text-gray-dark"> &bull; {{ post.time|date('d/m/Y') }}</small></span>
         {{ post.text }}
-        {% if app.user and post.getUser().id == app.user.id %}
+        {% if is_granted('edit', post) or is_granted('delete', post) %}
             <small class="d-block text-right mt-3">
-                <a href="{{ path('micro_post_edit', {'id': post.id}) }}" class="font-weight-bold">Edit</a>&nbsp;&nbsp;
-                <a href="{{ path('micro_post_delete', {'id': post.id}) }}" class="text-danger font-weight-bold">Delete</a>
+                {% if is_granted('edit', post) %}
+                    <a href="{{ path('micro_post_edit', {'id': post.id}) }}" class="font-weight-bold">Edit</a>&nbsp;&nbsp;
+                {% endif %}
+                {% if is_granted('delete', post) %}
+                    <a href="{{ path('micro_post_delete', {'id': post.id}) }}" class="text-danger font-weight-bold">Delete</a>
+                {% endif %}
             </small>
         {% endif %}
     </p>

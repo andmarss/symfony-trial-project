@@ -7,6 +7,7 @@ use App\Entity\MicroPost;
 use App\Form\MicroPostType;
 use App\Repository\MicroPostRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -75,12 +76,15 @@ class MicroPostController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="micro_post_delete")
+     * @Security("is_granted('delete', post)", message="Доступ запрещен")
      *
      * @param MicroPost $post
      * @return Response
      */
     public function delete(MicroPost $post): Response
     {
+        // $this->denyAccessUnlessGranted('delete', $post);
+
         $this->entityManager->remove($post);
         $this->entityManager->flush();
 
@@ -125,6 +129,7 @@ class MicroPostController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="micro_post_edit")
+     * @Security("is_granted('edit', post)", message="Доступ запрещен")
      *
      * @param MicroPost $post
      * @param Request $request
@@ -132,6 +137,8 @@ class MicroPostController extends AbstractController
      */
     public function edit(MicroPost $post, Request $request): Response
     {
+        // $this->denyAccessUnlessGranted('delete', $post);
+
         $form = $this->formFactory->create(MicroPostType::class, $post);
         $form->handleRequest($request);
 
