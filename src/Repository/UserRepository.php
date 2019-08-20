@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -17,6 +18,33 @@ class UserRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, User::class);
+    }
+
+    /**
+     * @param User|null $ignoreUser
+     * @return mixed
+     */
+    public function findAllWithMoreThanZeroPosts(User $ignoreUser = null)
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        if($ignoreUser) {
+            return $qb->select('u')
+                ->innerJoin('u.posts', 'mp')
+                ->groupBy('u')
+                ->having('count(mp) > 0')
+                ->andHaving('u != :user')
+                ->setParameter('user', $ignoreUser)
+                ->getQuery()
+                ->getResult();
+        } else {
+            return $qb->select('u')
+                ->innerJoin('u.posts', 'mp')
+                ->groupBy('u')
+                ->having('count(mp) > 0')
+                ->getQuery()
+                ->getResult();
+        }
     }
 
     // /**

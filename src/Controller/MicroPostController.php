@@ -7,6 +7,7 @@ use App\Entity\MicroPost;
 use App\Entity\User;
 use App\Form\MicroPostType;
 use App\Repository\MicroPostRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -68,22 +69,28 @@ class MicroPostController extends AbstractController
 
     /**
      * @Route("/", name="micro_post_index")
+     * @param UserRepository $repository
+     * @return Response
      */
-    public function index()
+    public function index(UserRepository $repository)
     {
         /**
          * @var User $user
          */
         $user = $this->getUser();
+        $usersToFollow = [];
 
         if($user instanceof User) {
             $posts = $this->repository->findAllByUsers($user->getFollowing());
+
+            $usersToFollow = count($posts) === 0 ? $repository->findAllWithMoreThanZeroPosts($user) : [];
         } else {
             $posts = $this->repository->findBy([], ['time' => 'DESC']);
         }
 
         return $this->render('micro-post/index.html.twig', [
-            'posts' => $posts
+            'posts'         => $posts,
+            'usersToFollow' => $usersToFollow
         ]);
     }
 
