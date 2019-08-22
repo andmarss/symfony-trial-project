@@ -55,6 +55,9 @@ class RegisterController extends AbstractController
             );
 
             $user->setPassword($password);
+
+            $user->setRoles([User::ROLE_USER]);
+
             /**
              * @var ObjectManager $manager
              */
