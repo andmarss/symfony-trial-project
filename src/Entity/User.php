@@ -22,6 +22,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @property string $password
  * @property string $email
  * @property string $fullName
+ * @property bool $enabled
+ * @property string $confirmationToken
  */
 class User implements UserInterface, \Serializable
 {
@@ -91,6 +93,14 @@ class User implements UserInterface, \Serializable
      * @ORM\ManyToMany(targetEntity="App\Entity\MicroPost", mappedBy="likedBy")
      */
     private $postsLiked;
+    /**
+     * @ORM\Column(type="string", nullable=true, length=30)
+     */
+    private $confirmationToken;
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $enabled;
 
     public function __construct()
     {
@@ -98,6 +108,8 @@ class User implements UserInterface, \Serializable
         $this->followers = new ArrayCollection();
         $this->following = new ArrayCollection();
         $this->postsLiked = new ArrayCollection();
+        $this->roles = [static::ROLE_USER];
+        $this->enabled = false;
     }
 
     public function getId(): ?int
@@ -182,7 +194,8 @@ class User implements UserInterface, \Serializable
             $this->id,
             $this->username,
             $this->email,
-            $this->password
+            $this->password,
+            $this->enabled
         ]);
     }
 
@@ -197,7 +210,7 @@ class User implements UserInterface, \Serializable
      */
     public function unserialize($serialized)
     {
-        list($this->id, $this->username, $this->email, $this->password) = unserialize($serialized);
+        list($this->id, $this->username, $this->email, $this->password, $this->enabled) = unserialize($serialized);
     }
 
     /**
@@ -326,5 +339,42 @@ class User implements UserInterface, \Serializable
     public function getPostsLiked()
     {
         return $this->postsLiked;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getConfirmationToken()
+    {
+        return $this->confirmationToken;
+    }
+
+    /**
+     * @param string $confirmationToken
+     */
+    public function setConfirmationToken(string $confirmationToken): void
+    {
+        $this->confirmationToken = $confirmationToken;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param bool $enabled
+     */
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
+    }
+
+    public function isEnabled(): bool
+    {
+       return $this->enabled;
     }
 }

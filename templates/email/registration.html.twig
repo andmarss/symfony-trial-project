@@ -2,6 +2,8 @@
 
 <p>Hello, {{ user.fullName }}! You are registered into app!</p>
 
+<p>Please, confirm your account by clicking this <a href="{{ url('security_confirm', {'token': user.confirmationToken}) }}">link</a></p>
+
 <p>To login, go to <a href="{{ url('security_login') }}">login page</a>.</p>
 
 <p>Thanks!</p>
